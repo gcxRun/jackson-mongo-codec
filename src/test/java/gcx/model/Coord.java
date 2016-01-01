@@ -2,6 +2,7 @@ package gcx.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import lombok.Data;
 
 
@@ -9,6 +10,6 @@ import lombok.Data;
 @JsonSerialize(using = CoordJsonSerializer.class)
 @Data
 public class Coord {
-    public double _lat;
-    public double _long;
+  public double _lat;
+  public double _long;
 }

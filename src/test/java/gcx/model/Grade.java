@@ -1,7 +1,8 @@
 package gcx.model;
 
-import lombok.Data;
 import org.joda.time.DateTime;
+
+import lombok.Data;
 
 /*
 {
@@ -14,8 +15,8 @@ import org.joda.time.DateTime;
 @Data
 public class Grade {
 
-    public DateTime date;
-    public String grade;
-    public int score;
+  public DateTime date;
+  public String grade;
+  public int score;
 
 }

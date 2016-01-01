@@ -1,43 +1,43 @@
 package gcx.model;
 
 public class Circle extends Shape {
-    double radius;
+  double radius;
 
-    public Circle()
-    {
-        super();
-    }
-    public Circle(int radius,ShapeColor color) {
-        super(color);
-        this.radius = radius;
-    }
+  public Circle() {
+    super();
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+  public Circle(int radius, ShapeColor color) {
+    super(color);
+    this.radius = radius;
+  }
 
-        Circle circle = (Circle) o;
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    if (!super.equals(o)) return false;
 
-        return Double.compare(circle.radius, radius) == 0;
+    Circle circle = (Circle) o;
 
-    }
+    return Double.compare(circle.radius, radius) == 0;
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        long temp;
-        temp = Double.doubleToLongBits(radius);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        return result;
-    }
+  }
 
-    public double getRadius() {
-        return radius;
-    }
+  @Override
+  public int hashCode() {
+    int result = super.hashCode();
+    long temp;
+    temp = Double.doubleToLongBits(radius);
+    result = 31 * result + (int) (temp ^ (temp >>> 32));
+    return result;
+  }
 
-    public void setRadius(double radius) {
-        this.radius = radius;
-    }
+  public double getRadius() {
+    return radius;
+  }
+
+  public void setRadius(double radius) {
+    this.radius = radius;
+  }
 }

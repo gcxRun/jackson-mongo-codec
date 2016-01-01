@@ -5,40 +5,42 @@ package gcx.model;
  */
 
 public class Square extends Shape {
-    double sideLength;
+  double sideLength;
 
-    public Square(){}
-    public Square(int sideLength,ShapeColor color) {
-        super(color);
-        this.sideLength = sideLength;
-    }
+  public Square() {
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+  public Square(int sideLength, ShapeColor color) {
+    super(color);
+    this.sideLength = sideLength;
+  }
 
-        Square square = (Square) o;
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    if (!super.equals(o)) return false;
 
-        return Double.compare(square.sideLength, sideLength) == 0;
+    Square square = (Square) o;
 
-    }
+    return Double.compare(square.sideLength, sideLength) == 0;
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        long temp;
-        temp = Double.doubleToLongBits(sideLength);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        return result;
-    }
+  }
 
-    public double getSideLength() {
-        return sideLength;
-    }
+  @Override
+  public int hashCode() {
+    int result = super.hashCode();
+    long temp;
+    temp = Double.doubleToLongBits(sideLength);
+    result = 31 * result + (int) (temp ^ (temp >>> 32));
+    return result;
+  }
 
-    public void setSideLength(double sideLength) {
-        this.sideLength = sideLength;
-    }
+  public double getSideLength() {
+    return sideLength;
+  }
+
+  public void setSideLength(double sideLength) {
+    this.sideLength = sideLength;
+  }
 }

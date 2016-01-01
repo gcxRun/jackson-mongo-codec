@@ -1,6 +1,7 @@
 package gcx;
 
 import com.mongodb.client.MongoCollection;
+
 import org.bson.Document;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -16,59 +17,52 @@ import static org.junit.Assert.assertEquals;
  */
 public class JodaTimeTest extends MongoTest {
 
-    private static class Foo {
-        public DateTime ts = new DateTime(DateTimeZone.UTC);
+  @Test
+  public void testDateTime_Serial() {
+    MongoCollection<Foo> foos = getMongoCollection("serial", Foo.class);
+    foos.drop();
 
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+    Foo foo = new Foo();
+    foos.insertOne(foo);
 
-            Foo foo = (Foo) o;
+    Foo anotherFoo = foos.find().first();
+    assertEquals(foo, anotherFoo);
+  }
 
-            return ts != null ? ts.equals(foo.ts) : foo.ts == null;
+  @Test
+  public void testDateTime_isMongoDateTime() {
+    MongoCollection<Foo> foos = getMongoCollection("isDateTime", Foo.class);
+    foos.drop();
 
-        }
+    Foo foo = new Foo();
+    foos.insertOne(foo);
 
-        @Override
-        public int hashCode() {
-            return ts != null ? ts.hashCode() : 0;
-        }
-    }
-    private MongoCollection<Foo> getSimpleFooMongoCollection(String name) {
-        return testDatabase.getCollection(name, Foo.class)
-                .withCodecRegistry(registry);
-    }
+    MongoCollection<Document> raws = testDatabase.getCollection("isDateTime");
+    Document firstFoo = raws.find().first();
+    assertTrue(firstFoo.containsKey("ts"));
+    Date date = firstFoo.getDate("ts");
 
-    @Test
-    public void testDateTime_Serial()
-    {
-        MongoCollection<Foo> foos = getSimpleFooMongoCollection("serial");
-        foos.drop();
+    assertEquals(foo.ts.getMillis(), date.getTime());
+  }
 
-        Foo foo = new Foo();
-        foos.insertOne(foo);
+  private static class Foo {
+    public DateTime ts = new DateTime(DateTimeZone.UTC);
 
-        Foo anotherFoo = foos.find().first();
-        assertEquals(foo,anotherFoo);
-    }
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) return true;
+      if (o == null || getClass() != o.getClass()) return false;
 
-    @Test
-    public void testDateTime_isMongoDateTime()
-    {
-        MongoCollection<Foo> foos = getSimpleFooMongoCollection("isDateTime");
-        foos.drop();
+      Foo foo = (Foo) o;
 
-        Foo foo = new Foo();
-        foos.insertOne(foo);
-
-        MongoCollection<Document> raws = testDatabase.getCollection("isDateTime");
-        Document firstFoo = raws.find().first();
-        assertTrue(firstFoo.containsKey("ts"));
-        Date date = firstFoo.getDate("ts");
-
-        assertEquals(foo.ts.getMillis(),date.getTime());
+      return ts != null ? ts.equals(foo.ts) : foo.ts == null;
 
     }
+
+    @Override
+    public int hashCode() {
+      return ts != null ? ts.hashCode() : 0;
+    }
+  }
 
 }

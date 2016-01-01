@@ -15,10 +15,10 @@ import lombok.Data;
 */
 @Data
 public class Address {
-    public String building;
+  public String building;
 
-    public String street;
-    public String zipcode;
+  public String street;
+  public String zipcode;
 
-    public Coord coord;
+  public Coord coord;
 }
