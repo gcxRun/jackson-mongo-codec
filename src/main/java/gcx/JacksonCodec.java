@@ -1,9 +1,8 @@
 package gcx;
 
-import gcx.objectid.MongoObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.bson.BsonReader;
 import org.bson.BsonWriter;
-import org.bson.RawBsonDocument;
 import org.bson.codecs.Codec;
 import org.bson.codecs.DecoderContext;
 import org.bson.codecs.EncoderContext;
@@ -15,18 +14,20 @@ import java.io.IOException;
 public class JacksonCodec<T> implements Codec<T> {
 
     private final Class<T> clazz;
-    private final MongoObjectMapper objectMapper;
-    private final Codec<RawBsonDocument> rawBsonDocumentCodec;
+    private final ObjectMapper objectMapper;
+    private final CustomBsonFactory bsonFactory;
 
-    public JacksonCodec(MongoObjectMapper objectMapper, CodecRegistry codecRegistry, Class<T> clazz) {
+    public JacksonCodec(ObjectMapper objectMapper, CodecRegistry codecRegistry, Class<T> clazz) {
         this.clazz = clazz;
         this.objectMapper = objectMapper;
-        this.rawBsonDocumentCodec = codecRegistry.get(RawBsonDocument.class);
+        this.bsonFactory = (CustomBsonFactory)objectMapper.getFactory();//TODO add check
+
     }
 
     public T decode(BsonReader reader, DecoderContext decoderContext) {
         try {
-            return objectMapper.readValue(reader, clazz);
+
+            return objectMapper.readValue(bsonFactory.createParser(reader),clazz);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -34,7 +35,7 @@ public class JacksonCodec<T> implements Codec<T> {
 
     public void encode(BsonWriter writer, T value, EncoderContext encoderContext) {
         try {
-            objectMapper.writeValue(writer, value);
+            objectMapper.writeValue(bsonFactory.createGenerator(writer), value);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

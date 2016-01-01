@@ -253,7 +253,7 @@ public class CustomBsonGenerator extends JsonGenerator {
 
     @Override
     public void flush() throws IOException {
-        throw new UnsupportedOperationException();
+        //throw new UnsupportedOperationException();
     }
 
     @Override

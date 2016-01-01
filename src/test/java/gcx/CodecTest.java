@@ -21,7 +21,10 @@ public class CodecTest extends MongoTest {
 
 
 
-
+    private MongoCollection<Restaurant> getRestaurantMongoCollection() {
+        return testDatabase.getCollection("restaurants", Restaurant.class)
+                .withCodecRegistry(registry);
+    }
 
 /*
     //TODO move that our or the rest
@@ -76,10 +79,7 @@ public class CodecTest extends MongoTest {
 
     }
 
-    private MongoCollection<Restaurant> getRestaurantMongoCollection() {
-        return testDatabase.getCollection("restaurants", Restaurant.class)
-                .withCodecRegistry(registry);
-    }
+
 
     private Restaurant buildDummyRestaurant(String restaurantId) {
         Restaurant restaurant = new Restaurant();

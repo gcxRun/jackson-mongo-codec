@@ -10,7 +10,6 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;
 import gcx.joda.JodaTimeBsonModule;
 import gcx.objectid.MongoBsonModule;
-import gcx.objectid.MongoObjectMapper;
 import org.bson.codecs.configuration.CodecProvider;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
@@ -31,12 +30,11 @@ public class MongoTest
         client = new MongoClient();
         testDatabase = client.getDatabase("test");
 
-        JacksonMongoIntegration integration = new JacksonMongoIntegration();
+        JsonFactory jsonFactory = new CustomBsonFactory();
 
-        MongoObjectMapper objectMapper = (MongoObjectMapper)buildObjectMapperWithJodaSupport(null);
-        integration.setObjectMapper(objectMapper);
+        ObjectMapper objectMapper = buildObjectMapperWithJodaSupport(jsonFactory);
 
-        CodecProvider jacksonCodecProvider = integration.getCodecProvider();
+        CodecProvider jacksonCodecProvider = new JacksonCodecProvider(objectMapper);
 
         registry = extendDefaultCodecRegistries(jacksonCodecProvider);
     }
@@ -53,7 +51,7 @@ public class MongoTest
     }
 
     protected ObjectMapper buildObjectMapperWithJodaSupport(JsonFactory jsonFactory) {
-        ObjectMapper mapper = new MongoObjectMapper()
+        ObjectMapper mapper = new ObjectMapper(jsonFactory)
                 .registerModule(new JodaTimeBsonModule())
                 .registerModule(new MongoBsonModule())
                 //.registerModule(new BsonModule())
