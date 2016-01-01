@@ -46,7 +46,8 @@ public class JodaTimeBsonModule extends Module {
 
         @Override
         public void serialize(DateTime jodaTime, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
-            jgen.writeObject(jodaTime.getMillis());
+            long ts = jodaTime.getMillis();
+            jgen.writeObject(ts);
         }
     }
 

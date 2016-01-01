@@ -1,14 +1,10 @@
 package gcx;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.client.MongoCollection;
 import gcx.model.Circle;
 import gcx.model.Shape;
 import gcx.model.Square;
 import org.junit.Test;
-
-import java.io.IOException;
-import java.util.ArrayList;
 
 import static com.mongodb.client.model.Filters.eq;
 import static org.junit.Assert.assertEquals;
@@ -50,7 +46,7 @@ public class PolymorphismTest extends MongoTest{
         assertEquals(circle,newCircle);
     }
 
-
+/**
     @Test
     public void testPlainMapper() throws IOException {
         Shape square = new Square(32, Shape.ShapeColor.BLACK);
@@ -61,7 +57,7 @@ public class PolymorphismTest extends MongoTest{
         shapes.add(circle);
 
         ObjectMapper mapper = new ObjectMapper();
-       // String result = mapper.writeValueAsString(square);
+        String result = mapper.writeValueAsString(square);
 
 
         //System.out.println(result);
@@ -72,4 +68,5 @@ public class PolymorphismTest extends MongoTest{
 
         System.out.println(o);
     }
+    **/
 }

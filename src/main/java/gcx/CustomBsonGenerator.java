@@ -228,12 +228,14 @@ public class CustomBsonGenerator extends JsonGenerator {
     @Override
     public void writeObject(Object pojo) throws IOException {
         if (pojo instanceof ObjectId) {
-            writeObjectId(pojo);
-        } else if (pojo instanceof Long) {
+            this.writeObjectId(pojo);
+        }
+        //hack to support native date
+        else if (pojo instanceof Long) {
             Long ts = (Long) pojo;
             writer.writeDateTime(ts);
         } else
-            throw new IOException();
+            throw new UnsupportedOperationException();
     }
 
     public void writeObjectId(Object id) throws IOException {
