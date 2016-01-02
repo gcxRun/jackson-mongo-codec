@@ -1,5 +1,7 @@
 package gcx;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.mongodb.client.MongoCollection;
 
 import org.bson.Document;
@@ -8,6 +10,8 @@ import org.joda.time.DateTimeZone;
 import org.junit.Test;
 
 import java.util.Date;
+
+import lombok.Data;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
@@ -19,13 +23,13 @@ public class JodaTimeTest extends MongoTest {
 
   @Test
   public void testDateTime_Serial() {
-    MongoCollection<Foo> foos = getMongoCollection("serial", Foo.class);
+    MongoCollection<Base> foos = getMongoCollection("serial", Base.class);
     foos.drop();
 
-    Foo foo = new Foo();
+    Foo foo = new Foo(new DateTime(DateTimeZone.UTC));
     foos.insertOne(foo);
 
-    Foo anotherFoo = foos.find().first();
+    Base anotherFoo = foos.find().first();
     assertEquals(foo, anotherFoo);
   }
 
@@ -34,7 +38,7 @@ public class JodaTimeTest extends MongoTest {
     MongoCollection<Foo> foos = getMongoCollection("isDateTime", Foo.class);
     foos.drop();
 
-    Foo foo = new Foo();
+    Foo foo = new Foo(new DateTime(DateTimeZone.UTC));
     foos.insertOne(foo);
 
     MongoCollection<Document> raws = testDatabase.getCollection("isDateTime");
@@ -45,23 +49,28 @@ public class JodaTimeTest extends MongoTest {
     assertEquals(foo.ts.getMillis(), date.getTime());
   }
 
-  private static class Foo {
-    public DateTime ts = new DateTime(DateTimeZone.UTC);
 
-    @Override
-    public boolean equals(Object o) {
-      if (this == o) return true;
-      if (o == null || getClass() != o.getClass()) return false;
+  @JsonTypeInfo(
+          use = JsonTypeInfo.Id.NAME,
+          include = JsonTypeInfo.As.PROPERTY,
+          property = "type")
+  @JsonSubTypes({
+          @JsonSubTypes.Type(value = Foo.class, name = "foo")
+  })
+  @Data
+  public static abstract class Base {
+    public String name = "base";
+  }
 
-      Foo foo = (Foo) o;
-
-      return ts != null ? ts.equals(foo.ts) : foo.ts == null;
-
+  @Data
+  public static class Foo extends Base {
+    public DateTime ts = null;
+    public Foo(){
+      this.name = "foo";
     }
-
-    @Override
-    public int hashCode() {
-      return ts != null ? ts.hashCode() : 0;
+    public Foo(DateTime ts){
+      this();
+      this.ts = ts;
     }
   }
 
