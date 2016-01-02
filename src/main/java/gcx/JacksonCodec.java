@@ -20,7 +20,7 @@ public class JacksonCodec<T> implements Codec<T> {
   private final JsonFactory jsonFactory;
 
   /**
-   * The objectMapper has to be created with a CustomBsonParser.
+   * The objectMapper has to be created with a MongoBsonParser.
    * @param objectMapper a classic Jackson ObjectMapper
    * @param codecRegistry a Mongo code registry
    * @param clazz the class
@@ -36,7 +36,7 @@ public class JacksonCodec<T> implements Codec<T> {
    */
   public T decode(BsonReader reader, DecoderContext decoderContext) {
     try {
-      CustomBsonParser parser = new CustomBsonParser(reader);
+      MongoBsonParser parser = new MongoBsonParser(reader);
       parser.setCodec(objectMapper.getFactory().getCodec());
 
       return objectMapper.readValue(parser, clazz);
@@ -50,7 +50,7 @@ public class JacksonCodec<T> implements Codec<T> {
    */
   public void encode(BsonWriter writer, T value, EncoderContext encoderContext) {
     try {
-      CustomBsonGenerator generator = new CustomBsonGenerator(writer);
+      MongoBsonGenerator generator = new MongoBsonGenerator(writer);
       generator.setCodec(objectMapper.getFactory().getCodec());
 
       objectMapper.writeValue(generator, value);

@@ -22,7 +22,7 @@ import java.util.LinkedList;
  * Implements a JsonParser by wrappping a Mongo BsonReader.
  */
 
-public class CustomBsonParser extends JsonParser {
+public class MongoBsonParser extends JsonParser {
 
   private final BsonReader reader;
 
@@ -35,7 +35,7 @@ public class CustomBsonParser extends JsonParser {
    * Constructs a JsonParser leveraging the reader.
    * @param reader - the wrapped reader
    */
-  public CustomBsonParser(BsonReader reader) {
+  public MongoBsonParser(BsonReader reader) {
     this.reader = reader;
 
     BsonType currentBsonType = reader.readBsonType();

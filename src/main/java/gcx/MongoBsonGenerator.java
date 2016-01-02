@@ -19,11 +19,11 @@ import java.math.BigInteger;
 /**
  * Created by greg on 30/12/15.
  */
-public class CustomBsonGenerator extends JsonGenerator {
+public class MongoBsonGenerator extends JsonGenerator {
   private final BsonWriter writer;
   private ObjectCodec codec;
 
-  public CustomBsonGenerator(BsonWriter writer) {
+  public MongoBsonGenerator(BsonWriter writer) {
     this.writer = writer;
   }
 
