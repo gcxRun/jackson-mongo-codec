@@ -23,6 +23,8 @@ public class SimpleMongoTest extends MongoTest {
     a.longValue = 64;
     a.floatValue = (float) 3.14;
     a.name = "foo";
+    a.booleanTrue = true;
+    a.booleanFalse = false;
 
     as.insertOne(a);
 
@@ -38,5 +40,7 @@ public class SimpleMongoTest extends MongoTest {
     public int intValue;
     public long longValue;
     public float floatValue;
+    public boolean booleanTrue;
+    public boolean booleanFalse;
   }
 }

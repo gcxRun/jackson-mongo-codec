@@ -210,8 +210,8 @@ public class CustomBsonGenerator extends JsonGenerator {
   }
 
   @Override
-  public void writeBoolean(boolean state) throws IOException {
-    throw new UnsupportedOperationException();
+  public void writeBoolean(boolean value) throws IOException {
+    writer.writeBoolean(value);
   }
 
   @Override

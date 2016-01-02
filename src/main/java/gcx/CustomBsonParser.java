@@ -279,6 +279,15 @@ public class CustomBsonParser extends JsonParser {
         valueToken.longValue = reader.readDateTime();
         poll();
         break;
+      case BOOLEAN:
+        boolean value = reader.readBoolean();
+        valueToken.jsonToken = value ? JsonToken.VALUE_TRUE : JsonToken.VALUE_FALSE;
+        poll();
+        break;
+      case NULL:
+        valueToken.jsonToken = JsonToken.VALUE_NULL;
+        poll();
+        break;
       default:
         throw new UnsupportedOperationException();
     }
