@@ -41,7 +41,7 @@ public class JodaTimeTest extends MongoTest {
     Foo foo = new Foo(new DateTime(DateTimeZone.UTC));
     foos.insertOne(foo);
 
-    MongoCollection<Document> raws = testDatabase.getCollection("isDateTime");
+    MongoCollection<Document> raws = getMongoCollection("isDateTime");
     Document firstFoo = raws.find().first();
     assertTrue(firstFoo.containsKey("ts"));
     Date date = firstFoo.getDate("ts");

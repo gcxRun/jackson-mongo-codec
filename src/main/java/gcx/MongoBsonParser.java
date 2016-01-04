@@ -38,7 +38,7 @@ public class MongoBsonParser extends JsonParser {
   public MongoBsonParser(BsonReader reader) {
     this.reader = reader;
 
-    BsonType currentBsonType = reader.readBsonType();
+    reader.readBsonType();
     reader.readStartDocument();
     pushState(State.OBJECT);
 /*
@@ -183,10 +183,6 @@ public class MongoBsonParser extends JsonParser {
 
   private boolean isInArray() {
     return peek() == State.ARRAY;
-  }
-
-  private boolean isInDocumentOrArray() {
-    return peek() == State.OBJECT || peek() == State.ARRAY;
   }
 
   @Override
@@ -482,12 +478,9 @@ public class MongoBsonParser extends JsonParser {
   }
 
   class CustomJsonStreamContext extends JsonStreamContext {
-
-    JsonStreamContext parent;
-
     @Override
     public JsonStreamContext getParent() {
-      return parent;
+      return null;
     }
 
     @Override

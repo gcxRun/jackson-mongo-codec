@@ -14,7 +14,7 @@ public class JacksonCodecProvider implements CodecProvider {
   }
 
   public <T> Codec<T> get(final Class<T> clazz, final CodecRegistry registry) {
-    return new JacksonCodec<T>(objectMapper, registry, clazz);
+    return new JacksonCodec<T>(objectMapper, clazz);
   }
 }
 

@@ -9,6 +9,7 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
+import org.bson.Document;
 import org.bson.codecs.configuration.CodecProvider;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
@@ -53,6 +54,9 @@ public class MongoTest {
   protected <T> MongoCollection<T> getMongoCollection(String name, Class<T> clazz) {
     return testDatabase.getCollection(name, clazz)
             .withCodecRegistry(registry);
+  }
+  protected  MongoCollection<Document> getMongoCollection(String name) {
+    return testDatabase.getCollection(name);
   }
 
   protected ObjectMapper buildObjectMapperWithJodaSupport() {

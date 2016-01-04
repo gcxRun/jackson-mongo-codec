@@ -1,6 +1,5 @@
 package gcx;
 
-import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.bson.BsonReader;
@@ -8,7 +7,6 @@ import org.bson.BsonWriter;
 import org.bson.codecs.Codec;
 import org.bson.codecs.DecoderContext;
 import org.bson.codecs.EncoderContext;
-import org.bson.codecs.configuration.CodecRegistry;
 
 import java.io.IOException;
 
@@ -17,18 +15,15 @@ public class JacksonCodec<T> implements Codec<T> {
 
   private final Class<T> clazz;
   private final ObjectMapper objectMapper;
-  private final JsonFactory jsonFactory;
 
   /**
    * The objectMapper has to be created with a MongoBsonParser.
    * @param objectMapper a classic Jackson ObjectMapper
-   * @param codecRegistry a Mongo code registry
    * @param clazz the class
    */
-  public JacksonCodec(ObjectMapper objectMapper, CodecRegistry codecRegistry, Class<T> clazz) {
+  public JacksonCodec(ObjectMapper objectMapper,Class<T> clazz) {
     this.clazz = clazz;
     this.objectMapper = objectMapper;
-    this.jsonFactory = objectMapper.getFactory();
   }
 
   /**
