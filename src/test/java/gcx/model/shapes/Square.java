@@ -1,4 +1,4 @@
-package gcx.model;
+package gcx.model.shapes;
 
 /**
  * Created by greg on 29/12/15.

@@ -1,8 +1,10 @@
 package gcx.joda;
 
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
@@ -12,6 +14,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleDeserializers;
 import com.fasterxml.jackson.databind.module.SimpleSerializers;
 
+import org.bson.BsonDateTime;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
@@ -49,15 +52,31 @@ public class JodaTimeBsonModule extends Module {
 
   public static class DateTimeBsonSerializer extends JsonSerializer<DateTime> {
 
+    private ObjectCodec codec;
+
     @Override
     public void serialize(DateTime jodaTime,
                           JsonGenerator jgen,
                           SerializerProvider provider)
             throws IOException, JsonProcessingException {
       long ts = jodaTime.getMillis();
-      jgen.writeObject(ts);
+      BsonDateTime dateTime = new BsonDateTime(ts);
+
+      popObjectCodec(jgen);
+      jgen.writeObject(dateTime);
+      pushObjectCodec(jgen);
+    }
+
+    private void popObjectCodec(JsonGenerator jgen) {
+      this.codec = jgen.getCodec();
+      jgen.setCodec(null);
+    }
+
+    private void pushObjectCodec(JsonGenerator jgen) {
+      jgen.setCodec(codec);
     }
   }
+
 
   public static class DateTimeBsonDeserializer extends JsonDeserializer<DateTime> {
 
@@ -65,8 +84,13 @@ public class JodaTimeBsonModule extends Module {
     public DateTime deserialize(JsonParser jp,
                                 DeserializationContext ctxt)
             throws IOException, JsonProcessingException {
-      long ts = jp.getLongValue();
-      return new DateTime(ts, DateTimeZone.UTC);
+      Object object = jp.getEmbeddedObject();
+      if (object instanceof BsonDateTime) {
+        long ts =  ((BsonDateTime) object).getValue();
+        return new DateTime(ts, DateTimeZone.UTC);
+      } else {
+        throw new JsonParseException("BsonDateTime expected", jp.getCurrentLocation());
+      }
     }
   }
 }

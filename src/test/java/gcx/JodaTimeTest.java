@@ -42,10 +42,11 @@ public class JodaTimeTest extends MongoTest {
     foos.insertOne(foo);
 
     MongoCollection<Document> raws = getMongoCollection("isDateTime");
+
     Document firstFoo = raws.find().first();
     assertTrue(firstFoo.containsKey("ts"));
-    Date date = firstFoo.getDate("ts");
 
+    Date date = firstFoo.getDate("ts");//would throw classcastexception if not a date
     assertEquals(foo.ts.getMillis(), date.getTime());
   }
 

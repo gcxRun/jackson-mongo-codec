@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.core.Version;
 
+import org.bson.BsonDateTime;
 import org.bson.BsonReader;
 import org.bson.BsonType;
 
@@ -41,96 +42,6 @@ public class MongoBsonParser extends JsonParser {
     reader.readBsonType();
     reader.readStartDocument();
     pushState(State.OBJECT);
-/*
-        //_id
-        currentBsonType = reader.readBsonType();
-        String name = reader.readName(); // 1 token
-        Object value = reader.readObjectId(); //1 token
-
-        //address
-        currentBsonType = reader.readBsonType(); //object
-        name = reader.readName(); //1 token
-        reader.readStartDocument();
-
-        //address.building
-        currentBsonType = reader.readBsonType(); //string
-        name = reader.readName(); //1 token
-        value = reader.readString(); //1 token
-
-        //address.coord
-        currentBsonType = reader.readBsonType(); //array
-        name = reader.readName();
-        reader.readStartArray();
-
-        //address.coord[0]
-        currentBsonType = reader.readBsonType(); //double
-        value = reader.readDouble();
-
-        //address.coord[1]
-        currentBsonType = reader.readBsonType(); //double
-        value = reader.readDouble();
-
-        currentBsonType = reader.readBsonType();//end of array
-        reader.readEndArray(); //end array
-
-        //address.street
-        currentBsonType = reader.readBsonType(); //string
-        name = reader.readName();
-        value = reader.readString();
-
-        //address.zipcode
-        currentBsonType = reader.readBsonType(); //string
-        name = reader.readName();
-        value = reader.readString();
-
-        currentBsonType = reader.readBsonType(); //end of document
-        reader.readEndDocument();
-
-        //borough
-        currentBsonType = reader.readBsonType(); //string
-        name = reader.readName();
-        value = reader.readString();
-
-        //cuisine
-        currentBsonType = reader.readBsonType(); //string
-        name = reader.readName();
-        value = reader.readString();
-
-        //grades
-        currentBsonType = reader.readBsonType(); //begin of array
-        name = reader.readName();
-        reader.readStartArray();
-
-        //grades[0]
-        currentBsonType = reader.readBsonType(); //begin of document
-        reader.readStartDocument();
-
-        //grades[0].date
-        currentBsonType = reader.readBsonType(); //begin of document
-        name = reader.readName();
-        value = reader.readDateTime();
-
-        //grades[0].grade
-        currentBsonType = reader.readBsonType(); //
-        name = reader.readName();
-        value = reader.readString();
-
-        //grades[0].score
-        currentBsonType = reader.readBsonType(); //
-        name = reader.readName();
-        value = reader.readInt32();
-
-        currentBsonType = reader.readBsonType(); //end of document
-        reader.readEndDocument();
-
-        //grades[1]
-        currentBsonType = reader.readBsonType(); //begin of document
-        reader.readStartDocument();
-
-        //_id
-        name = reader.readName();
-   */
-
   }
 
   private void reset() {
@@ -148,7 +59,6 @@ public class MongoBsonParser extends JsonParser {
   @Override
   public void setCodec(ObjectCodec codec) {
     this.codec = codec;
-
   }
 
   @Override
@@ -255,6 +165,8 @@ public class MongoBsonParser extends JsonParser {
         valueToken.stringValue = reader.readString();
         poll();
         break;
+      case END_OF_DOCUMENT:
+        break;
       case DOUBLE:
         valueToken.jsonToken = JsonToken.VALUE_NUMBER_FLOAT;
         valueToken.doubleValue = reader.readDouble();
@@ -272,7 +184,7 @@ public class MongoBsonParser extends JsonParser {
         break;
       case DATE_TIME:
         valueToken.jsonToken = JsonToken.VALUE_EMBEDDED_OBJECT;
-        valueToken.longValue = reader.readDateTime();
+        valueToken.value = new BsonDateTime(reader.readDateTime());
         poll();
         break;
       case BOOLEAN:
@@ -284,6 +196,23 @@ public class MongoBsonParser extends JsonParser {
         valueToken.jsonToken = JsonToken.VALUE_NULL;
         poll();
         break;
+      case DB_POINTER:
+        valueToken.jsonToken = JsonToken.VALUE_EMBEDDED_OBJECT;
+        valueToken.value = reader.readDBPointer();
+        break;
+      case TIMESTAMP:
+        valueToken.jsonToken = JsonToken.VALUE_EMBEDDED_OBJECT;
+        valueToken.value = reader.readTimestamp();
+        break;
+      case BINARY:
+      case UNDEFINED:
+      case REGULAR_EXPRESSION:
+      case JAVASCRIPT:
+      case SYMBOL:
+      case JAVASCRIPT_WITH_SCOPE:
+
+      case MIN_KEY:
+      case MAX_KEY:
       default:
         throw new UnsupportedOperationException();
     }

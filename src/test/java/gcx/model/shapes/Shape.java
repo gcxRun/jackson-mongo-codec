@@ -1,4 +1,4 @@
-package gcx.model;
+package gcx.model.shapes;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;

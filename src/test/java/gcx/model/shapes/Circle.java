@@ -1,4 +1,6 @@
-package gcx.model;
+package gcx.model.shapes;
+
+
 
 public class Circle extends Shape {
   double radius;

@@ -4,9 +4,9 @@ import com.mongodb.client.MongoCollection;
 
 import org.junit.Test;
 
-import gcx.model.Circle;
-import gcx.model.Shape;
-import gcx.model.Square;
+import gcx.model.shapes.Circle;
+import gcx.model.shapes.Shape;
+import gcx.model.shapes.Square;
 
 import static com.mongodb.client.model.Filters.eq;
 import static junit.framework.TestCase.assertNotNull;

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.SerializableString;
 import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.core.Version;
 
+import org.bson.BsonDateTime;
 import org.bson.BsonWriter;
 import org.bson.types.ObjectId;
 
@@ -221,12 +222,13 @@ public class MongoBsonGenerator extends JsonGenerator {
 
   @Override
   public void writeObject(Object pojo) throws IOException {
+
     if (pojo instanceof ObjectId) {
       this.writeObjectId(pojo);
-    } else if (pojo instanceof Long) {
+    } else if (pojo instanceof BsonDateTime) {
       //hack to support native date
-      Long ts = (Long) pojo;
-      writer.writeDateTime(ts);
+      BsonDateTime ts = (BsonDateTime) pojo;
+      writer.writeDateTime(ts.getValue());
     } else {
       throw new UnsupportedOperationException();
     }
