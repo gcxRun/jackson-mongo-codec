@@ -1,12 +1,11 @@
-package gcx;
+package org.jackongo;
 
 import com.mongodb.client.MongoCollection;
 
+import org.jackongo.model.shapes.Circle;
+import org.jackongo.model.shapes.Shape;
+import org.jackongo.model.shapes.Square;
 import org.junit.Test;
-
-import gcx.model.shapes.Circle;
-import gcx.model.shapes.Shape;
-import gcx.model.shapes.Square;
 
 import static com.mongodb.client.model.Filters.eq;
 import static junit.framework.TestCase.assertNotNull;

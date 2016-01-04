@@ -1,4 +1,4 @@
-package gcx;
+package org.jackongo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -13,11 +13,10 @@ import org.bson.Document;
 import org.bson.codecs.configuration.CodecProvider;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
+import org.jackongo.joda.JodaTimeBsonModule;
+import org.jackongo.objectid.MongoBsonModule;
 import org.junit.After;
 import org.junit.Before;
-
-import gcx.joda.JodaTimeBsonModule;
-import gcx.objectid.MongoBsonModule;
 
 /**
  * Created by greg on 29/12/15.

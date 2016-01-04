@@ -1,4 +1,4 @@
-package gcx.model.shapes;
+package org.jackongo.model.shapes;
 
 /**
  * Created by greg on 29/12/15.

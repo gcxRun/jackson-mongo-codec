@@ -1,18 +1,18 @@
-package gcx;
+package org.jackongo;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.result.UpdateResult;
 
+import org.jackongo.model.restaurants.Grade;
+import org.jackongo.model.restaurants.Restaurant;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.Test;
 
 import java.util.ArrayList;
 
-import gcx.model.Address;
-import gcx.model.Coord;
-import gcx.model.Grade;
-import gcx.model.Restaurant;
+import org.jackongo.model.restaurants.Address;
+import org.jackongo.model.restaurants.Coord;
 
 import static com.mongodb.client.model.Filters.eq;
 import static junit.framework.TestCase.assertNotNull;

@@ -1,4 +1,4 @@
-package gcx.objectid;
+package org.jackongo.objectid;
 
 import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.databind.*;

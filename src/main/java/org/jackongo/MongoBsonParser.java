@@ -1,4 +1,4 @@
-package gcx;
+package org.jackongo;
 
 import com.fasterxml.jackson.core.Base64Variant;
 import com.fasterxml.jackson.core.JsonLocation;

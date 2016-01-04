@@ -1,4 +1,4 @@
-package gcx.model;
+package org.jackongo.model.restaurants;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;

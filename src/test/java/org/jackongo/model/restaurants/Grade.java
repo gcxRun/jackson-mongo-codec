@@ -1,4 +1,4 @@
-package gcx.model;
+package org.jackongo.model.restaurants;
 
 import org.joda.time.DateTime;
 

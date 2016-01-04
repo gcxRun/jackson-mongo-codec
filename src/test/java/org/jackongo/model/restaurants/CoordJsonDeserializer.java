@@ -1,4 +1,4 @@
-package gcx.model;
+package org.jackongo.model.restaurants;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;

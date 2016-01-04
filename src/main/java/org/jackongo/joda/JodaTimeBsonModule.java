@@ -1,4 +1,4 @@
-package gcx.joda;
+package org.jackongo.joda;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
