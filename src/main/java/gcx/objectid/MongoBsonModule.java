@@ -1,18 +1,9 @@
 package gcx.objectid;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.Version;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.Module;
-import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.core.*;
+import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.module.SimpleDeserializers;
 import com.fasterxml.jackson.databind.module.SimpleSerializers;
-
 import org.bson.types.ObjectId;
 
 import java.io.IOException;
@@ -53,6 +44,8 @@ public class MongoBsonModule extends Module {
 
   public static class ObjectIdBsonSerializer extends JsonSerializer<ObjectId> {
 
+    private ObjectCodec codec;
+
     @Override
     public void serialize(ObjectId objectId,
                           JsonGenerator jgen,
@@ -62,8 +55,18 @@ public class MongoBsonModule extends Module {
       if (objectId == null) {
         provider.defaultSerializeNull(jgen);
       } else {
-        jgen.writeObjectId(objectId);
+        popObjectCodec(jgen);
+        jgen.writeObject(objectId);
+        pushObjectCodec(jgen);
       }
+    }
+
+    private void popObjectCodec(JsonGenerator jgen) {
+      this.codec = jgen.getCodec();
+      jgen.setCodec(null);
+    }
+    private void pushObjectCodec(JsonGenerator jgen) {
+      jgen.setCodec(codec);
     }
   }
 
@@ -74,7 +77,7 @@ public class MongoBsonModule extends Module {
                                 DeserializationContext ctxt)
             throws IOException, JsonProcessingException {
 
-      Object object = jp.getObjectId();
+      Object object = jp.getEmbeddedObject();
       if (object == null) {
         return null;
       }

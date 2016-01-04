@@ -46,7 +46,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.6.5-SNAPSHOT</version><!-- waiting pullrequest -->
+            <version>${jackson.version}</version><!-- waiting pullrequest 2.6.5-SNAPSHOT -->
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
