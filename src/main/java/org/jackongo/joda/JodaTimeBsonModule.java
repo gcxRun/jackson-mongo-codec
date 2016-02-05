@@ -61,19 +61,7 @@ public class JodaTimeBsonModule extends Module {
             throws IOException, JsonProcessingException {
       long ts = jodaTime.getMillis();
       BsonDateTime dateTime = new BsonDateTime(ts);
-
-      popObjectCodec(jgen);
-      jgen.writeObject(dateTime);
-      pushObjectCodec(jgen);
-    }
-
-    private void popObjectCodec(JsonGenerator jgen) {
-      this.codec = jgen.getCodec();
-      jgen.setCodec(null);
-    }
-
-    private void pushObjectCodec(JsonGenerator jgen) {
-      jgen.setCodec(codec);
+      jgen.writeEmbeddedObject(dateTime);
     }
   }
 
@@ -86,10 +74,10 @@ public class JodaTimeBsonModule extends Module {
             throws IOException, JsonProcessingException {
       Object object = jp.getEmbeddedObject();
       if (object instanceof BsonDateTime) {
-        long ts =  ((BsonDateTime) object).getValue();
+        long ts = ((BsonDateTime) object).getValue();
         return new DateTime(ts, DateTimeZone.UTC);
       } else {
-        throw new JsonParseException("BsonDateTime expected", jp.getCurrentLocation());
+        throw new JsonParseException(jp, "BsonDateTime expected");
       }
     }
   }

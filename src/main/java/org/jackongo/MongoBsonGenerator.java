@@ -222,20 +222,24 @@ public class MongoBsonGenerator extends JsonGenerator {
 
   @Override
   public void writeObject(Object pojo) throws IOException {
-
-    if (pojo instanceof ObjectId) {
-      this.writeObjectId(pojo);
-    } else if (pojo instanceof BsonDateTime) {
-      //hack to support native date
-      BsonDateTime ts = (BsonDateTime) pojo;
-      writer.writeDateTime(ts.getValue());
-    } else {
-      throw new UnsupportedOperationException();
-    }
+    throw new UnsupportedOperationException();
   }
 
   public void writeObjectId(Object id) throws IOException {
     writer.writeObjectId((ObjectId) id);
+  }
+
+  @Override
+  public void writeEmbeddedObject(Object embeddedObject) throws IOException {
+    if (embeddedObject instanceof ObjectId) {
+      this.writeObjectId(embeddedObject);
+    } else if (embeddedObject instanceof BsonDateTime) {
+      //hack to support native date
+      BsonDateTime ts = (BsonDateTime) embeddedObject;
+      writer.writeDateTime(ts.getValue());
+    } else {
+      throw new UnsupportedOperationException();
+    }
   }
 
   @Override

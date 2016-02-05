@@ -55,9 +55,9 @@ public class MongoBsonModule extends Module {
       if (objectId == null) {
         provider.defaultSerializeNull(jgen);
       } else {
-        popObjectCodec(jgen);
-        jgen.writeObject(objectId);
-        pushObjectCodec(jgen);
+        //popObjectCodec(jgen);
+        jgen.writeEmbeddedObject(objectId);
+        //pushObjectCodec(jgen);
       }
     }
 
