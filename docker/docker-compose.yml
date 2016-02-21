@@ -1,0 +1,17 @@
+#mongodata:
+#  image: mongo-data
+#  volumes:
+#    - /data/db
+#    - /data/configdb
+
+mongodb:
+  image: mongo
+  ports:
+    - "27017:27017"
+#  volumes_from:
+#    - mongodata
+
+mongoseed:
+  image: mongo-seed
+  links:
+    - mongodb

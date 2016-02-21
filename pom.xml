@@ -109,9 +109,9 @@
                     <includes>
                     <include>**/*Test.java</include>
                     </includes>
-                    <excludes>
+                    <!-- <excludes>
                         <exclude>**/CodecTest.java</exclude>
-                    </excludes>
+                    </excludes> -->
                 </configuration>
                 <executions>
                     <execution>
@@ -183,7 +183,7 @@
                     <images>
                         <!-- A single's image configuration -->
                         <image>
-                            <name>mongo</name>
+                            <name>mongo-test</name>
                             <run>
                                 <ports>
                                     <port>+mongo.host:mongo.port:27017</port>
@@ -213,6 +213,7 @@
                         <phase>post-integration-test</phase>
                         <goals>
                             <goal>stop</goal>
+                            <goal>remove</goal>
                         </goals>
                     </execution>
                 </executions>
